@@ -1,0 +1,14 @@
+.square {
+    height: 205px;
+    width: 205px;
+    border: 1px solid black;
+    background-color: red;  
+    /* text-align: center; */    
+}
+
+.hidden {
+    text-align: center;
+    margin: 25% auto;
+     
+       
+}
