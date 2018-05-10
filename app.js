@@ -21,20 +21,28 @@
                     {
                         "class": "hidden",
                         "data-value": i,
-                        "data-shown": array[i]
+                        "data-shown": array[i],
+                        "hidden": true
                     }
-                )
+                );
+
+                hiddenNumberDiv.text(array[i]);
                 $("." + i).append(hiddenNumberDiv);
             }
         },
         revealHidden: function (clicked) {
-            if (this.revealedSquares.length < 2) {
-                this.revealedSquares.push(clicked[0].textContent);
-                clicked[0].children[0].hidden = false;
-                console.log(this.revealedSquares);
-            }
-            console.log(clicked);
-            console.log(clicked.attributes)
+            this.revealedSquares.push(clicked[0].children[0].dataset.shown);
+                if (this.revealedSquares.length < 3) {
+                    
+                    clicked[0].children[0].hidden = false;
+                    clicked.css("background-color", "purple")
+                    console.log(this.revealedSquares);
+
+
+                    // New function for keeping squares that are the same number visable and purble or reverting back to hidden and red
+                }
+                console.log(clicked);
+                console.log(clicked.attributes)
 
 
         }
@@ -61,7 +69,7 @@
 
 
 
-        // game.revealHidden($(this));
+        game.revealHidden($(this));
 
 
     })
