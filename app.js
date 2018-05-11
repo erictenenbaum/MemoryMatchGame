@@ -31,20 +31,48 @@
             }
         },
         revealHidden: function (clicked) {
-            this.revealedSquares.push(clicked[0].children[0].dataset.shown);
+            this.revealedSquares.push(
+                {
+                    dataValue: clicked[0].children[0].dataset.value,
+                    dataShown: clicked[0].children[0].dataset.shown
+                }
+            );
                 if (this.revealedSquares.length < 3) {
                     
                     clicked[0].children[0].hidden = false;
-                    clicked.css("background-color", "purple")
+                    clicked.css("background-color", "#1EABF1")
                     console.log(this.revealedSquares);
 
-
-                    // New function for keeping squares that are the same number visable and purble or reverting back to hidden and red
+                    if(this.revealedSquares.length === 2){
+                        console.log("Run checkForMatch()");
+                        setTimeout(function(){
+                            game.checkForMatch()
+                        }, 500);                        
+                    }                   
                 }
-                console.log(clicked);
-                console.log(clicked.attributes)
+              
 
 
+        },
+        checkForMatch: function(){
+            if(this.revealedSquares[0].dataShown === this.revealedSquares[1].dataShown){
+                console.log("same");
+               return this.revealedSquares = [];
+            }
+            else{
+                console.log("different");
+                console.log($("." + this.revealedSquares[0].dataValue)[0].children);
+
+                for(let i = 0; i < this.revealedSquares.length; i++) {
+                    $("." + this.revealedSquares[i].dataValue)[0].children[0].hidden = true;
+                    $("." + this.revealedSquares[i].dataValue).css("background-color", "white");
+                }
+
+               return this.revealedSquares = [];
+                
+            }
+
+            
         }
     }
     $(".square").on("click", function () {
