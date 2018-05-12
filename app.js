@@ -41,20 +41,13 @@
                 if (this.revealedSquares.length < 3) {
                     
                     clicked[0].children[0].hidden = false;
-                    clicked.css("background-color", "#1EABF1")
-                    // console.log(this.revealedSquares);
+                    clicked.css("background-color", "#1EABF1");
 
-                    if(this.revealedSquares.length === 2){
-                        console.log("Run checkForMatch()");
-                        // setTimeout(function(){
-                        //     game.checkForMatch()
-                        // }, 500);    
-                        return this.checkForMatch();                    
+                    if (this.revealedSquares.length === 2) {
+                      console.log("Run checkForMatch()");
+                      return this.checkForMatch();
                     }                   
                 }
-              
-
-
         },
         checkForMatch: function(){
             if(this.revealedSquares[0].dataShown === this.revealedSquares[1].dataShown
@@ -64,11 +57,12 @@
                 this.matchedPairs.push(this.revealedSquares[0].dataShown);
                 console.log("Matched Pairs: " + this.matchedPairs.length);
 
-                for(let i = 0; i < this.revealedSquares.length; i++) {                    
-                    $("." + this.revealedSquares[i].dataValue).removeClass("square").addClass("continueStyle");
+                for (let i = 0; i < this.revealedSquares.length; i++) {
+                  $("." + this.revealedSquares[i].dataValue)
+                    .removeClass("square")
+                    .addClass("continueStyle");
                 }
-            //    return this.revealedSquares = [];
-                  return this.checkForWin();
+                return this.checkForWin();
             }
             else{
                 console.log("different");
@@ -81,13 +75,8 @@
                    }
 
                    return (game.revealedSquares = []);
-                 }, 500);  
-
-                
-                
-            }
-
-            
+                 }, 500);                 
+            } 
         },
         checkForWin: function(){
             if(this.matchedPairs.length === (this.numberArray.length -1) / 2){
@@ -102,34 +91,10 @@
         }
     }
     $(".container").on("click", ".square", function () {
-        //    alert("hello");
-
-        // console.log($(this)[0].children[0].dataset.value);
-        // console.log($(this)[0].children[0].dataset.shown);
-        // console.log($(this)[0].children)
-        // console.log($(this)[0].children[0].hidden);
-
-
-        // $(this)[0].children[0].attr("hidden", "false");
-
-
-
-        // if($(this)[0].children[0].hidden){
-        //     $(this)[0].children[0].hidden = false;
-        // }
-        // else{
-        //     $(this)[0].children[0].hidden = true;
-        // }
-
-
-
         game.revealHidden($(this));
+    });
 
-
-    })
-
+    // Starts the game by generating the hidden numbers behind the squares
+    // generateHiddenNumbers takes in an array as a parameter. I pass in a function "shuffle" which returns a randomly shuffled array
     game.generateHiddenNumbers(game.shuffle(game.numberArray));
-
-   
-
 })();
