@@ -12,7 +12,10 @@
 .hidden {
     text-align: center;
     margin: 25% auto;
-    font-size: 25px;
-     
+    font-size: 25px;    
        
+}
+
+.myFooter {
+    margin-top: 50px;
 }
