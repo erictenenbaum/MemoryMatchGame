@@ -50,6 +50,7 @@
                 }
         },
         checkForMatch: function(){
+            console.log("Matched Pairs: " + this.matchedPairs);
             if(this.revealedSquares[0].dataShown === this.revealedSquares[1].dataShown
                 && this.revealedSquares[0].dataValue !== this.revealedSquares[1].dataValue
                 && !this.matchedPairs.includes(this.revealedSquares[0].dataShown)){
@@ -82,15 +83,28 @@
             if(this.matchedPairs.length === (this.numberArray.length -1) / 2){
                 setTimeout(function(){
                     alert("You won the game!");                   
-                    
+                    game.restartGame();
                 }, 250); 
             }
             else{
                 this.revealedSquares = [];
             }
+        },
+        restartGame: function(){
+            console.log("restarting game");
+            this.revealedSquares = [];
+            this.matchedPairs = [];
+            for(let i = 0; i < this.numberArray.length; i++){
+                $("." + i).empty();
+                $("." + i).removeClass("continueStyle").addClass("square");
+                $("." + i).css("background-color", "white");
+            }
+
+           return this.generateHiddenNumbers(this.shuffle(this.numberArray));
         }
     }
     $(".container").on("click", ".square", function () {
+        console.log($(this));
         game.revealHidden($(this));
     });
 
