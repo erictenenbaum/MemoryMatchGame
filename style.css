@@ -6,7 +6,10 @@
     /* text-align: center; */ 
     border-radius: 20px;
     color : black ;
-    border: 5px solid rgb(62, 146, 255);   
+    border: 5px solid rgb(62, 146, 255);       
+}
+.square:hover {
+    background-color: #83e8f5;
 }
 .continueStyle{
     height: 205px;
@@ -18,7 +21,6 @@
     color : black ;
     border: 5px solid rgb(62, 146, 255);
 }
-
 .hidden {
     text-align: center;
     margin: 25% auto;

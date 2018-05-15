@@ -162,6 +162,11 @@
                 $("." + i).empty();
                 $("." + i).removeClass("continueStyle").addClass("square");
                 $("." + i).css("background-color", "white");
+                $("." + i).hover(function(){
+                    $(this).css("background-color", "#83e8f5")
+                }, function(){
+                    $(this).css("background-color", "white");
+                })
             }
             this.timer();
             // $(".stoppedTimer").removeClass("stoppedTimer").addClass("DOMTimerHolder");
