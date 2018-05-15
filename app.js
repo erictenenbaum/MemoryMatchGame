@@ -5,6 +5,7 @@
         revealedSquares: [],
         matchedPairs: [],
         timerCounter: 0,
+        fastestTime: 0,
         shuffle: function (a) {
             var j, x, i;
             for (i = a.length - 1; i > 0; i--) {
@@ -127,7 +128,8 @@
             if(this.matchedPairs.length === (this.numberArray.length -1) / 2){
                 setTimeout(()=>{
                     this.stopTimer();
-                    alert("You won the game! it took this long: " + this.timerCounter);                   
+                    alert("You won the game! it took this long: " + this.timerCounter); 
+                    this.setFastestTime();                  
                     this.restartGame();
                 }, 250); 
             }
@@ -146,6 +148,17 @@
         },
         stopTimer: function(){
             $(".DOMTimerHolder").removeClass("DOMTimerHolder").addClass("stoppedTimer");
+        },
+        setFastestTime: function(){
+            let currentTime = this.timerCounter;
+
+            if(this.fastestTime > 0 && this.fastestTime < currentTime){
+                $(".DOMFastestTime").text(this.fastestTime);
+            }
+            else{                
+                $(".DOMFastestTime").text(currentTime);
+                this.fastestTime = currentTime;
+            }
         },
         startGame: function(){
             game.generateRows(game.numberArray);
