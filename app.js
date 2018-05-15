@@ -1,12 +1,12 @@
 (function () {
-
     const game = {
         numberArray: [1, 1, 2, 2, 3, 3, 4, 4, 5],
         revealedSquares: [],
         matchedPairs: [],
         timerCounter: 0,
-        fastestTime: 0,
-        shuffle: function (a) {
+        fastestTime: 0,  
+        timerVar: "timerVar",      
+        shuffle: function(a){
             var j, x, i;
             for (i = a.length - 1; i > 0; i--) {
                 j = Math.floor(Math.random() * (i + 1));
@@ -17,11 +17,7 @@
             return a;
         },
         generateRows: function(array){
-            console.log(array);
-
-            let numOfRows = array.length / 3;
-
-            console.log("num of rows: " + numOfRows);
+            let numOfRows = array.length / 3;           
 
             for(let i = 0; i < numOfRows; i++){
                 let rowDiv = $("<div>");
@@ -45,22 +41,18 @@
                     {
                         "class": "square col-md-4 " + i
                     }
-                )
+                );
                 $(".r" + currentRow).append(squareDiv);
 
-                multOfThree++;
-                console.log("Mult of Three: ", multOfThree);
+                multOfThree++;                
 
                 if(multOfThree === 3){
                     currentRow++;
-                    multOfThree = 0;
-                    console.log("Current Row: ", currentRow);
+                    multOfThree = 0;                 
                 }
-
             }
         },
-        generateHiddenNumbers: function (array) {
-
+        generateHiddenNumbers: function(array) {
             for (let i = 0; i < array.length; i++) {
                 let hiddenNumberDiv = $("<div>");
                 hiddenNumberDiv.attr(
@@ -76,7 +68,7 @@
                 $("." + i).append(hiddenNumberDiv);
             }
         },
-        revealHidden: function (clicked) {
+        revealHidden: function(clicked){
             this.revealedSquares.push(
                 {
                     dataValue: clicked[0].children[0].dataset.value,
@@ -88,20 +80,17 @@
                     clicked[0].children[0].hidden = false;
                     clicked.css("background-color", "#1EABF1");
 
-                    if (this.revealedSquares.length === 2) {
-                      console.log("Run checkForMatch()");
+                    if (this.revealedSquares.length === 2) {                      
                       return this.checkForMatch();
                     }                   
                 }
         },
-        checkForMatch: function(){
-            console.log("Matched Pairs: " + this.matchedPairs);
+        checkForMatch: function(){            
             if(this.revealedSquares[0].dataShown === this.revealedSquares[1].dataShown
                 && this.revealedSquares[0].dataValue !== this.revealedSquares[1].dataValue
                 && !this.matchedPairs.includes(this.revealedSquares[0].dataShown)){
                 console.log("same");
-                this.matchedPairs.push(this.revealedSquares[0].dataShown);
-                console.log("Matched Pairs: " + this.matchedPairs.length);
+                this.matchedPairs.push(this.revealedSquares[0].dataShown);    
 
                 for (let i = 0; i < this.revealedSquares.length; i++) {
                   $("." + this.revealedSquares[i].dataValue)
@@ -111,43 +100,41 @@
                 return this.checkForWin();
             }
             else{
-                console.log("different");
-                // console.log($("." + this.revealedSquares[0].dataValue)[0].children);
+                console.log("different");        
 
-                 setTimeout(function() {
-                   for (let i = 0; i < game.revealedSquares.length; i++) {
-                     $("." + game.revealedSquares[i].dataValue)[0].children[0].hidden = true;
-                     $("." + game.revealedSquares[i].dataValue).css("background-color", "white");
+                 setTimeout(()=> {
+                   for (let i = 0; i < this.revealedSquares.length; i++) {
+                     $("." + this.revealedSquares[i].dataValue)[0].children[0].hidden = true;
+                     $("." + this.revealedSquares[i].dataValue).css("background-color", "white");
                    }
 
-                   return (game.revealedSquares = []);
-                 }, 500);                 
+                   return this.revealedSquares = [];
+                 }, 250);                 
             } 
         },
         checkForWin: function(){
             if(this.matchedPairs.length === (this.numberArray.length -1) / 2){
-                setTimeout(()=>{
+                setTimeout(()=>{                  
+                    alert(`You won the game! It took you ${this.timerCounter} seconds`);
                     this.stopTimer();
-                    alert("You won the game! it took this long: " + this.timerCounter); 
                     this.setFastestTime();                  
                     this.restartGame();
                 }, 250); 
             }
             else{
-                this.revealedSquares = [];
+              return this.revealedSquares = [];
             }
         },
-        timer: function(){            
-
-            setTimeout(()=>{
-                this.timerCounter++;
-                console.log("Counter: ", this.timerCounter);
+        timer: function(){             
+           this.timerVar = setTimeout(()=>{
+                this.timerCounter++;              
                 $(".DOMTimerHolder").text(this.timerCounter);
-                this.timer();
+               return this.timer();
             }, 1000);
         },
         stopTimer: function(){
-            $(".DOMTimerHolder").removeClass("DOMTimerHolder").addClass("stoppedTimer");
+            // $(".DOMTimerHolder").removeClass("DOMTimerHolder").addClass("stoppedTimer");
+            clearTimeout(this.timerVar)
         },
         setFastestTime: function(){
             let currentTime = this.timerCounter;
@@ -161,10 +148,10 @@
             }
         },
         startGame: function(){
-            game.generateRows(game.numberArray);
-            game.generateSquares(game.numberArray);
-            game.generateHiddenNumbers(game.shuffle(game.numberArray));
-            game.timer();
+            this.generateRows(this.numberArray);
+            this.generateSquares(this.numberArray);
+            this.generateHiddenNumbers(this.shuffle(this.numberArray));
+            this.timer();
         },
         restartGame: function(){
             console.log("restarting game");
@@ -176,22 +163,14 @@
                 $("." + i).removeClass("continueStyle").addClass("square");
                 $("." + i).css("background-color", "white");
             }
-
-            $(".stoppedTimer").removeClass("stoppedTimer").addClass("DOMTimerHolder");
-            
-
-           return this.generateHiddenNumbers(this.shuffle(this.numberArray));
+            this.timer();
+            // $(".stoppedTimer").removeClass("stoppedTimer").addClass("DOMTimerHolder");
+            return this.generateHiddenNumbers(this.shuffle(this.numberArray));
         }
     }
-    $(".container").on("click", ".square", function () {
-        console.log($(this));
+    $(".game").on("click", ".square", function() {      
         game.revealHidden($(this));
     });
-
-    // Starts the game by generating the hidden numbers behind the squares
-    // generateHiddenNumbers takes in an array as a parameter. I pass in a function "shuffle" which returns a randomly shuffled array
-    game.startGame();
-
-
     
+    game.startGame();    
 })();
