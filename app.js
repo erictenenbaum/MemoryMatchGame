@@ -4,6 +4,7 @@
         numberArray: [1, 1, 2, 2, 3, 3, 4, 4, 5],
         revealedSquares: [],
         matchedPairs: [],
+        timerCounter: 0,
         shuffle: function (a) {
             var j, x, i;
             for (i = a.length - 1; i > 0; i--) {
@@ -13,6 +14,49 @@
                 a[j] = x;
             }
             return a;
+        },
+        generateRows: function(array){
+            console.log(array);
+
+            let numOfRows = array.length / 3;
+
+            console.log("num of rows: " + numOfRows);
+
+            for(let i = 0; i < numOfRows; i++){
+                let rowDiv = $("<div>");
+
+                rowDiv.attr(
+                    {
+                        "class": "row r" + i
+                    }
+                )
+
+                $(".game").append(rowDiv);
+            }
+        },
+        generateSquares: function(array){
+            let numOfRow = array.length / 3;
+            let currentRow = 0;
+            let multOfThree = 0;
+            for(let i = 0; i < array.length; i++){
+                let squareDiv = $("<div>");
+                squareDiv.attr(
+                    {
+                        "class": "square col-md-4 " + i
+                    }
+                )
+                $(".r" + currentRow).append(squareDiv);
+
+                multOfThree++;
+                console.log("Mult of Three: ", multOfThree);
+
+                if(multOfThree === 3){
+                    currentRow++;
+                    multOfThree = 0;
+                    console.log("Current Row: ", currentRow);
+                }
+
+            }
         },
         generateHiddenNumbers: function (array) {
 
@@ -81,24 +125,47 @@
         },
         checkForWin: function(){
             if(this.matchedPairs.length === (this.numberArray.length -1) / 2){
-                setTimeout(function(){
-                    alert("You won the game!");                   
-                    game.restartGame();
+                setTimeout(()=>{
+                    this.stopTimer();
+                    alert("You won the game! it took this long: " + this.timerCounter);                   
+                    this.restartGame();
                 }, 250); 
             }
             else{
                 this.revealedSquares = [];
             }
         },
+        timer: function(){            
+
+            setTimeout(()=>{
+                this.timerCounter++;
+                console.log("Counter: ", this.timerCounter);
+                $(".DOMTimerHolder").text(this.timerCounter);
+                this.timer();
+            }, 1000);
+        },
+        stopTimer: function(){
+            $(".DOMTimerHolder").removeClass("DOMTimerHolder").addClass("stoppedTimer");
+        },
+        startGame: function(){
+            game.generateRows(game.numberArray);
+            game.generateSquares(game.numberArray);
+            game.generateHiddenNumbers(game.shuffle(game.numberArray));
+            game.timer();
+        },
         restartGame: function(){
             console.log("restarting game");
             this.revealedSquares = [];
             this.matchedPairs = [];
+            this.timerCounter = 0;           
             for(let i = 0; i < this.numberArray.length; i++){
                 $("." + i).empty();
                 $("." + i).removeClass("continueStyle").addClass("square");
                 $("." + i).css("background-color", "white");
             }
+
+            $(".stoppedTimer").removeClass("stoppedTimer").addClass("DOMTimerHolder");
+            
 
            return this.generateHiddenNumbers(this.shuffle(this.numberArray));
         }
@@ -110,5 +177,8 @@
 
     // Starts the game by generating the hidden numbers behind the squares
     // generateHiddenNumbers takes in an array as a parameter. I pass in a function "shuffle" which returns a randomly shuffled array
-    game.generateHiddenNumbers(game.shuffle(game.numberArray));
+    game.startGame();
+
+
+    
 })();
